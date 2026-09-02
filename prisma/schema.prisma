@@ -1,0 +1,93 @@
+// J's Finest Barbershop — booking system schema
+// Uses SQLite locally; swap provider to "postgresql" when deploying to Railway.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Service {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  name         String
+  /// price in cents (e.g. 3000 = $30.00)
+  priceCents   Int
+  /// service duration in minutes (drives time-slot length)
+  durationMin  Int
+  description  String
+  /// display order on the booking page
+  sortOrder    Int      @default(0)
+  isActive     Boolean  @default(true)
+  appointments Appointment[]
+}
+
+model Barber {
+  id              String   @id @default(cuid())
+  slug            String   @unique // matches public/barbers/<slug> folder
+  name            String
+  role            String
+  email           String   @unique // login email + notifications
+  phone           String?           // used for SMS notifications
+  /// Bcrypt password hash. Null until the barber has activated their account.
+  passwordHash    String?
+  bio             String
+  yearsExperience Int
+  /// JSON: [{ dayOfWeek: 0-6 (Sun-Sat), open: "HH:MM" | null, close: "HH:MM" | null }, ...]
+  weeklySchedule  String   @default("[]")
+  /// JSON array of specialty strings
+  specialties     String   @default("[]")
+  isOwner         Boolean  @default(false)
+  /// Admins can manage the homepage "Our Work" gallery. Owners are always
+  /// treated as admins; only the owner can grant or revoke this.
+  isAdmin         Boolean  @default(false)
+  isActive        Boolean  @default(true)
+  preferredAppointments Appointment[] @relation("PreferredBarber")
+  claimedAppointments   Appointment[] @relation("ClaimedBarber")
+}
+
+model Customer {
+  id           String        @id @default(cuid())
+  email        String        @unique
+  name         String
+  phone        String?
+  createdAt    DateTime      @default(now())
+  appointments Appointment[]
+}
+
+/// Appointment status values (kept as string for SQLite compatibility):
+/// - "PENDING": customer reserved, no barber has claimed yet
+/// - "CONFIRMED": a barber claimed it (or the preferred barber accepted)
+/// - "CANCELLED": customer or shop cancelled
+/// - "COMPLETED": the cut happened
+/// - "NO_SHOW": customer didn't show
+model Appointment {
+  id                 String   @id @default(cuid())
+  customer           Customer @relation(fields: [customerId], references: [id])
+  customerId         String
+  service            Service  @relation(fields: [serviceId], references: [id])
+  serviceId          String
+  /// If customer picked a specific barber, this is set. If they picked "Anyone", null.
+  preferredBarber    Barber?  @relation("PreferredBarber", fields: [preferredBarberId], references: [id])
+  preferredBarberId  String?
+  /// The barber who actually claimed/took the appointment. Null until claimed.
+  claimedBy          Barber?  @relation("ClaimedBarber", fields: [claimedById], references: [id])
+  claimedById        String?
+  startAt            DateTime
+  endAt              DateTime
+  status             String   @default("PENDING")
+  notes              String?
+  /// Optional tip amount in cents, recorded by the barber when marking DONE.
+  tipCents           Int?
+  /// Single-use token that lets the customer cancel via their confirmation email.
+  cancelToken        String   @unique @default(cuid())
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@index([startAt])
+  @@index([status])
+  @@index([claimedById])
+}

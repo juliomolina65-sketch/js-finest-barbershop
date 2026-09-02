@@ -1,0 +1,183 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Brand palette */
+  --color-bg: #0a0a0a;
+  --color-bg-elevated: #0e1510;
+  --color-bg-card: #101d15;
+  --color-gold-50: #fff6d9;
+  --color-gold-100: #f4d47c;
+  --color-gold-200: #e8c547;
+  --color-gold-400: #d4af37;
+  --color-gold-600: #a37e18;
+  --color-gold-700: #7a5e11;
+  /* Emerald greens pulled from the logo's letter fill and crown panels */
+  --color-green-50: #e4f3e9;
+  --color-green-100: #b7dcc3;
+  --color-green-200: #8cc4a0;
+  --color-green-300: #5faa7d;
+  --color-green-400: #3f8f63;
+  --color-green-600: #26603f;
+  --color-green-700: #17422b;
+  --color-green-900: #0c2416;
+  --color-pole-red: #c8102e;
+  --color-pole-blue: #1e40af;
+
+  /* Fonts */
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+}
+
+html, body {
+  background: var(--color-bg);
+  color: #ffffff;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Gold metallic gradient text effect — matches the logo's lettering */
+.text-gold-gradient {
+  background: linear-gradient(
+    180deg,
+    #f4d47c 0%,
+    #e8c547 25%,
+    #d4af37 50%,
+    #a37e18 75%,
+    #7a5e11 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Emerald metallic gradient text — matches the green letter fill of the logo */
+.text-green-gradient {
+  background: linear-gradient(
+    180deg,
+    #b7dcc3 0%,
+    #6fb08c 30%,
+    #3f8f63 55%,
+    #26603f 80%,
+    #17422b 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Divider accent — gold core with emerald fade, echoing the logo's trim */
+.divider-gold {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #26603f 25%,
+    #d4af37 50%,
+    #26603f 75%,
+    transparent 100%
+  );
+  height: 1px;
+  width: 100%;
+}
+
+/* Soft radial glow behind hero — gold from above, emerald from below */
+.hero-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse at top,
+      rgba(212, 175, 55, 0.12) 0%,
+      rgba(212, 175, 55, 0) 60%
+    ),
+    radial-gradient(
+      ellipse at bottom,
+      rgba(63, 143, 99, 0.1) 0%,
+      rgba(63, 143, 99, 0) 60%
+    );
+  pointer-events: none;
+}
+
+/* Hide scrollbars on mobile swipe carousels (still scrollable) */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth fade-in for hero content */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  animation: fadeUp 0.8s ease-out both;
+}
+.fade-up-delay-1 {
+  animation: fadeUp 0.8s ease-out 0.2s both;
+}
+.fade-up-delay-2 {
+  animation: fadeUp 0.8s ease-out 0.4s both;
+}
+.fade-up-delay-3 {
+  animation: fadeUp 0.8s ease-out 0.6s both;
+}
+
+/* ============================================================
+   "Our Work" auto-scrolling marquee
+   Single row of photos that slides right-to-left in a loop.
+   The pool is rendered TWICE in the DOM and the track translates
+   from 0 to -50%, so the seam between the two copies is invisible.
+   Pauses on hover. Disabled for reduced-motion users.
+   ============================================================ */
+@keyframes workMarquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.work-marquee {
+  animation: workMarquee 60s linear infinite;
+  will-change: transform;
+}
+
+.work-marquee-mask:hover .work-marquee {
+  animation-play-state: paused;
+}
+
+/* Soft edge fade so photos drift in/out instead of being chopped at the side */
+.work-marquee-mask {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 6%,
+    black 94%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 6%,
+    black 94%,
+    transparent 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-marquee {
+    animation: none;
+  }
+}
