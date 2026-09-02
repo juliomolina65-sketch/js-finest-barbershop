@@ -63,13 +63,18 @@ export default async function Home() {
       <section className="hero-glow relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 pt-10 pb-20 md:pt-16 md:pb-28 text-center">
           <div className="flex justify-center mb-10 fade-up">
-            <div className="relative w-[340px] h-[340px] sm:w-[440px] sm:h-[440px] md:w-[560px] md:h-[560px] lg:w-[640px] lg:h-[640px]">
+            {/* Box matches the logo's own 1267x1507 ratio so the art fills it
+                instead of being letterboxed inside a square, and `sizes` states
+                the real rendered width so the browser picks a large enough
+                source on 2x/3x screens. */}
+            <div className="relative w-[300px] sm:w-[380px] md:w-[460px] lg:w-[520px] aspect-[1267/1507]">
               <Image
                 src="/logo.webp"
                 alt="J's Finest Barbershop — Clean Cuts. Sharp Style. Finest You."
                 fill
                 priority
-                sizes="(max-width: 640px) 340px, (max-width: 768px) 440px, (max-width: 1024px) 560px, 640px"
+                quality={95}
+                sizes="(max-width: 640px) 300px, (max-width: 768px) 380px, (max-width: 1024px) 460px, 520px"
                 className="object-contain drop-shadow-[0_0_40px_rgba(212,175,55,0.15)]"
               />
             </div>
