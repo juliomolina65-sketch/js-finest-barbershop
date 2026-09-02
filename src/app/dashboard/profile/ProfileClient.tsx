@@ -12,6 +12,10 @@ import {
 } from "./photo-actions";
 import type { ScheduleDay } from "@/lib/booking";
 
+/** Must stay under next.config.ts experimental.proxyClientMaxBodySize. */
+const MAX_BATCH_MB = 55;
+const MAX_BATCH_BYTES = MAX_BATCH_MB * 1024 * 1024;
+
 const DAY_LABELS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 type Props = {
@@ -118,8 +122,24 @@ function PhotosSection({
   function handleWorkUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const files = e.target.files;
     if (!files || files.length === 0) return;
+
+    // The server accepts a 60MB request body. Phone photos run 3-8MB each, so
+    // a full batch can blow past that — and the server-side failure surfaces as
+    // an opaque "Unexpected end of form". Check here instead so the barber gets
+    // an instruction they can act on.
+    const list = Array.from(files);
+    const totalBytes = list.reduce((sum, f) => sum + f.size, 0);
+    if (totalBytes > MAX_BATCH_BYTES) {
+      const totalMb = Math.ceil(totalBytes / (1024 * 1024));
+      setError(
+        `Those ${list.length} photos total about ${totalMb}MB, which is over the ${MAX_BATCH_MB}MB limit per upload. Select a few at a time and upload again.`
+      );
+      if (workInputRef.current) workInputRef.current.value = "";
+      return;
+    }
+
     const fd = new FormData();
-    Array.from(files).forEach((f) => fd.append("files", f));
+    list.forEach((f) => fd.append("files", f));
     setError(null);
     startTransition(async () => {
       const res = await uploadWorkPhotos(fd);

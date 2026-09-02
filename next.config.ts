@@ -18,6 +18,14 @@ const nextConfig: NextConfig = {
   },
 
   experimental: {
+    // Middleware/proxy truncates request bodies at 10MB by default, which is
+    // SEPARATE from serverActions.bodySizeLimit below. Without this, a barber
+    // uploading a few phone photos got "Unexpected end of form" because the
+    // multipart body was cut off mid-stream. Named proxyClientMaxBodySize in
+    // this version (middlewareClientMaxBodySize is the deprecated alias; the
+    // two cannot both be set).
+    proxyClientMaxBodySize: "60mb",
+
     serverActions: {
       // Allow photo uploads from phones (iPhone photos are typically 3–8 MB,
       // and we accept up to 12 photos per work batch). Server-side validation
