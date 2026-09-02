@@ -72,6 +72,33 @@ async function main() {
   } else {
     console.log(`[bootstrap] ${barberCount} barbers already present — skipping`);
   }
+
+  // Owner bootstrap. A brand-new shop has nobody who can approve signups, so
+  // the first person to register would sit in "pending" forever with no one
+  // able to let them in. If there is no active owner yet, promote the
+  // configured owner email (set OWNER_EMAIL to override).
+  const ownerEmail = (process.env.OWNER_EMAIL || "juliomolina65@gmail.com")
+    .trim()
+    .toLowerCase();
+  const activeOwner = await prisma.barber.findFirst({
+    where: { isOwner: true, isActive: true },
+  });
+  if (!activeOwner) {
+    const candidate = await prisma.barber.findUnique({
+      where: { email: ownerEmail },
+    });
+    if (candidate) {
+      await prisma.barber.update({
+        where: { id: candidate.id },
+        data: { isOwner: true, isActive: true },
+      });
+      console.log(`[bootstrap] promoted ${ownerEmail} to active owner`);
+    } else {
+      console.log(
+        `[bootstrap] no active owner yet — sign up with ${ownerEmail} to claim it`
+      );
+    }
+  }
 }
 
 main()
