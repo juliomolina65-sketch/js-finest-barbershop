@@ -65,7 +65,7 @@ export default async function Home() {
           <div className="flex justify-center mb-10 fade-up">
             <div className="relative w-[340px] h-[340px] sm:w-[440px] sm:h-[440px] md:w-[560px] md:h-[560px] lg:w-[640px] lg:h-[640px]">
               <Image
-                src="/logo.png"
+                src="/logo.webp"
                 alt="J's Finest Barbershop — Clean Cuts. Sharp Style. Finest You."
                 fill
                 priority
@@ -101,23 +101,9 @@ export default async function Home() {
 
       {/* ============ ABOUT ============ */}
       <section className="relative border-t border-gold-700/20 overflow-hidden">
-        {/* The real shop floor. Green leather and gold chairs are the brand
-            palette in the room itself, so it sits behind the copy rather than
-            as a separate photo block. */}
-        <Image
-          src="/shop-interior.webp"
-          alt="Inside J's Finest Barbershop — green leather and gold barber chairs beneath hexagon lighting"
-          fill
-          sizes="100vw"
-          className="object-cover object-center"
-        />
-        {/* Scrim: the ceiling lights are blown out, so the gold heading needs a
-            solid wash plus edge fades to blend into the sections above/below. */}
-        <div aria-hidden className="absolute inset-0 bg-black/45" />
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-gradient-to-b from-bg via-black/25 to-bg"
-        />
+        {/* Deliberately the clearest window onto the fixed page background —
+            the surrounding sections are more opaque than this one. */}
+        <div aria-hidden className="absolute inset-0 bg-black/10" />
 
         <div className="relative max-w-4xl mx-auto px-6 py-24 md:py-36 text-center">
           <p className="font-sans text-xs tracking-[0.4em] text-green-200 mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
@@ -134,7 +120,7 @@ export default async function Home() {
       </section>
 
       {/* ============ SERVICES ============ */}
-      <section id="services" className="border-t border-gold-700/20 bg-bg-elevated">
+      <section id="services" className="border-t border-gold-700/20 bg-bg-elevated/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6 py-20 md:py-28">
           <div className="text-center mb-14">
             <p className="font-sans text-xs tracking-[0.4em] text-green-300 mb-3">
@@ -153,7 +139,7 @@ export default async function Home() {
               return (
                 <article
                   key={slug}
-                  className="group relative snap-center shrink-0 w-[80%] sm:w-[46%] md:w-auto md:shrink bg-bg-card border border-gold-700/30 rounded-sm p-6 md:p-8 hover:border-gold-400/60 transition"
+                  className="group relative snap-center shrink-0 w-[80%] sm:w-[46%] md:w-auto md:shrink bg-bg-card/85 backdrop-blur-sm border border-gold-700/30 rounded-sm p-6 md:p-8 hover:border-gold-400/60 transition"
                 >
                   <div className="flex items-start justify-between gap-4 mb-3">
                     <h3 className="font-display text-xl md:text-2xl text-gold-100">
@@ -218,7 +204,7 @@ export default async function Home() {
               <Link
                 key={b.slug}
                 href={`/barbers/${b.slug}`}
-                className="group snap-center shrink-0 w-[82%] sm:w-[46%] md:w-auto md:shrink bg-bg-card border border-gold-700/30 rounded-sm overflow-hidden hover:border-gold-400/60 transition flex flex-col"
+                className="group snap-center shrink-0 w-[82%] sm:w-[46%] md:w-auto md:shrink bg-bg-card/85 backdrop-blur-sm border border-gold-700/30 rounded-sm overflow-hidden hover:border-gold-400/60 transition flex flex-col"
               >
                 <div className="aspect-square bg-gradient-to-br from-bg-elevated to-bg flex items-center justify-center border-b border-gold-700/30 relative overflow-hidden">
                   {b.photo ? (
@@ -269,7 +255,7 @@ export default async function Home() {
       </section>
 
       {/* ============ VISIT US ============ */}
-      <section id="visit" className="border-t border-gold-700/20 bg-bg-elevated">
+      <section id="visit" className="border-t border-gold-700/20 bg-bg-elevated/80 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-6 py-20 md:py-28">
           <div className="text-center mb-14">
             <p className="font-sans text-xs tracking-[0.4em] text-green-300 mb-3">
@@ -351,10 +337,10 @@ export default async function Home() {
       </section>
 
       {/* ============ FOOTER ============ */}
-      <footer className="border-t border-gold-700/30 bg-black">
+      <footer className="border-t border-gold-700/30 bg-black/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="font-display text-lg tracking-wider">
-            <span className="text-green-gradient">J&apos;S FINEST</span>{" "}
+            <span className="text-logo-mark">J&apos;S FINEST</span>{" "}
             <span className="text-gold-gradient">BARBERSHOP</span>
           </p>
           <div className="flex items-center gap-6">

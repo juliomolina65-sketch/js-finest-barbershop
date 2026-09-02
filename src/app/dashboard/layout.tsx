@@ -20,7 +20,7 @@ export default async function DashboardLayout({
       <header className="sticky top-0 z-40 backdrop-blur-md bg-black/70 border-b border-gold-700/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-0">
           <Link href="/dashboard" className="flex items-center gap-3 min-w-0">
-            <span className="font-display text-xl tracking-wider text-green-gradient shrink-0">
+            <span className="font-display text-xl tracking-wider text-logo-mark shrink-0">
               J&apos;S FINEST
             </span>
             <span className="hidden sm:inline text-xs tracking-[0.3em] text-green-300 font-sans">

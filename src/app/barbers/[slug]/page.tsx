@@ -275,7 +275,7 @@ export default async function BarberProfile({
               {portfolio.map((src) => (
                 <div
                   key={src}
-                  className="group relative aspect-square overflow-hidden bg-bg-card border border-gold-700/30 rounded-sm hover:border-gold-400/60 transition"
+                  className="group relative aspect-square overflow-hidden bg-bg-card/85 backdrop-blur-sm border border-gold-700/30 rounded-sm hover:border-gold-400/60 transition"
                 >
                   <Image
                     src={src}
@@ -382,10 +382,10 @@ export default async function BarberProfile({
       )}
 
       {/* ============ FOOTER ============ */}
-      <footer className="border-t border-gold-700/30 bg-black">
+      <footer className="border-t border-gold-700/30 bg-black/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="font-display text-lg tracking-wider">
-            <span className="text-green-gradient">J&apos;S FINEST</span>{" "}
+            <span className="text-logo-mark">J&apos;S FINEST</span>{" "}
             <span className="text-gold-gradient">BARBERSHOP</span>
           </p>
           <SocialLinks />

@@ -73,7 +73,7 @@ export default async function BarbersIndex() {
                 <Link
                   key={b.id}
                   href={`/barbers/${b.slug}`}
-                  className="group bg-bg-card border border-gold-700/30 rounded-sm overflow-hidden hover:border-gold-400/60 transition flex flex-col"
+                  className="group bg-bg-card/85 backdrop-blur-sm border border-gold-700/30 rounded-sm overflow-hidden hover:border-gold-400/60 transition flex flex-col"
                 >
                   <div className="aspect-square bg-gradient-to-br from-bg-elevated to-bg flex items-center justify-center border-b border-gold-700/30 relative overflow-hidden">
                     {b.photo ? (
@@ -118,10 +118,10 @@ export default async function BarbersIndex() {
       </section>
 
       {/* ============ FOOTER ============ */}
-      <footer className="border-t border-gold-700/30 bg-black">
+      <footer className="border-t border-gold-700/30 bg-black/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="font-display text-lg tracking-wider">
-            <span className="text-green-gradient">J&apos;S FINEST</span>{" "}
+            <span className="text-logo-mark">J&apos;S FINEST</span>{" "}
             <span className="text-gold-gradient">BARBERSHOP</span>
           </p>
           <SocialLinks />

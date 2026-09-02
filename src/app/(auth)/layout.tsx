@@ -6,7 +6,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <header className="border-b border-gold-700/30">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <Link href="/" className="inline-flex items-center gap-3">
-            <span className="font-display text-2xl tracking-wider text-green-gradient">
+            <span className="font-display text-2xl tracking-wider text-logo-mark">
               J&apos;S FINEST
             </span>
             <span className="text-xs tracking-[0.3em] text-gold-400 font-sans">

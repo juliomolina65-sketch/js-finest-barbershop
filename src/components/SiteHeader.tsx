@@ -27,16 +27,16 @@ export default async function SiteHeader({ current = null }: Props) {
   return (
     <header className="sticky top-0 z-40 backdrop-blur-md bg-black/60 border-b border-gold-700/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-2 sm:gap-4">
-        <Link href="/" className="flex items-center gap-3 min-w-0">
-          <span className="font-display text-xl sm:text-2xl tracking-wider text-green-gradient shrink-0">
+        <Link href="/" className="flex items-center gap-3 shrink-0">
+          <span className="font-display text-xl sm:text-2xl tracking-wider text-logo-mark shrink-0">
             J&apos;S FINEST
           </span>
-          <span className="hidden lg:inline text-xs tracking-[0.3em] text-gold-400 font-sans">
+          <span className="hidden 2xl:inline text-xs tracking-[0.3em] text-gold-400 font-sans">
             BARBERSHOP
           </span>
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-5 xl:gap-7 text-sm tracking-widest font-sans">
+        <nav className="hidden xl:flex items-center gap-5 2xl:gap-7 text-sm tracking-widest font-sans">
           <Link href="/#services" className={cls("services")}>
             {t.services}
           </Link>
@@ -120,7 +120,7 @@ function ComingSoonItem({ label, note }: { label: string; note: string }) {
       className="inline-flex items-center gap-2 text-white/35 cursor-default select-none whitespace-nowrap"
     >
       {label}
-      <span className="hidden xl:inline text-[9px] tracking-[0.15em] uppercase text-green-300/70 border border-green-700/50 rounded-sm px-1.5 py-0.5">
+      <span className="hidden 2xl:inline text-[9px] tracking-[0.15em] uppercase text-green-300/70 border border-green-700/50 rounded-sm px-1.5 py-0.5">
         {note}
       </span>
     </span>

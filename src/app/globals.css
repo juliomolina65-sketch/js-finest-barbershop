@@ -66,6 +66,25 @@ html, body {
   color: transparent;
 }
 
+/* Wordmark treatment matching the logo: green gradient fill inside a gold
+   edge. paint-order draws the stroke first so it reads as an outline around
+   the letters rather than a line cutting through them. */
+.text-logo-mark {
+  background: linear-gradient(
+    180deg,
+    #cfe8d8 0%,
+    #6fb08c 35%,
+    #3f8f63 60%,
+    #26603f 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  -webkit-text-stroke: 0.8px #d4af37;
+  paint-order: stroke fill;
+}
+
 /* Divider accent — gold core with emerald fade, echoing the logo's trim */
 .divider-gold {
   background: linear-gradient(

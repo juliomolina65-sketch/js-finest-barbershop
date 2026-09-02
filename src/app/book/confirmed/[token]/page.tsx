@@ -54,7 +54,7 @@ export default async function ConfirmedPage({
       <header className="sticky top-0 z-40 backdrop-blur-md bg-black/60 border-b border-gold-700/30">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <span className="font-display text-2xl tracking-wider text-green-gradient">
+            <span className="font-display text-2xl tracking-wider text-logo-mark">
               J&apos;S FINEST
             </span>
             <span className="hidden sm:inline text-xs tracking-[0.3em] text-gold-400 font-sans">
@@ -133,7 +133,7 @@ export default async function ConfirmedPage({
       <footer className="border-t border-gold-700/30 bg-black">
         <div className="max-w-7xl mx-auto px-6 py-10 text-center">
           <p className="font-display text-lg tracking-wider">
-            <span className="text-green-gradient">J&apos;S FINEST</span>{" "}
+            <span className="text-logo-mark">J&apos;S FINEST</span>{" "}
             <span className="text-gold-gradient">BARBERSHOP</span>
           </p>
         </div>

@@ -19,7 +19,7 @@ type Props = {
 };
 
 /**
- * Hamburger menu for phones and tablets (hidden from lg up, where the
+ * Hamburger menu for phones, tablets and small laptops (hidden from xl up,
  * full inline nav takes over). Drops a panel below the sticky header with
  * the section links plus — below sm, where the header hides them — the
  * language toggle and BARBER LOG IN.
@@ -43,7 +43,7 @@ export default function MobileMenu({
   const upcoming = [labels.careers, labels.barberSchool];
 
   return (
-    <div className="lg:hidden">
+    <div className="xl:hidden">
       <button
         type="button"
         aria-label="Menu"
