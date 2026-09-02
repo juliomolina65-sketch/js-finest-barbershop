@@ -51,6 +51,7 @@ export default async function SiteHeader({ current = null }: Props) {
           </Link>
           {/* Not launched yet — rendered as disabled buttons rather than links
               so they announce themselves as unavailable instead of 404ing. */}
+          <ComingSoonItem label={t.shop} note={t.comingSoon} />
           <ComingSoonItem label={t.careers} note={t.comingSoon} />
           <ComingSoonItem label={t.barberSchool} note={t.comingSoon} />
         </nav>
@@ -96,6 +97,7 @@ export default async function SiteHeader({ current = null }: Props) {
               barbers: t.barbers,
               visit: t.visit,
               barberLogIn: t.barberLogIn,
+              shop: t.shop,
               careers: t.careers,
               barberSchool: t.barberSchool,
               comingSoon: t.comingSoon,

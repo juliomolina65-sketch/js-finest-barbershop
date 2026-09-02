@@ -12,6 +12,7 @@ type Props = {
     barbers: string;
     visit: string;
     barberLogIn: string;
+    shop: string;
     careers: string;
     barberSchool: string;
     comingSoon: string;
@@ -40,7 +41,7 @@ export default function MobileMenu({
 
   // Sections that aren't live yet — listed so visitors know they're coming,
   // but not linked anywhere.
-  const upcoming = [labels.careers, labels.barberSchool];
+  const upcoming = [labels.shop, labels.careers, labels.barberSchool];
 
   return (
     <div className="xl:hidden">
