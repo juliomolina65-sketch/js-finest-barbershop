@@ -16,7 +16,12 @@ export default async function DashboardLayout({
   const t = (await getDict()).dashboard;
 
   return (
-    <main className="min-h-screen flex flex-col">
+    <main className="relative min-h-screen flex flex-col">
+      {/* The shop photo runs behind the public site, but the barber tools are
+          dense working screens — calendar rows, times, customer details — so
+          they get a plain black field for legibility. Sits above the fixed
+          background from the root layout, below this page's own content. */}
+      <div aria-hidden className="fixed inset-0 -z-10 bg-black" />
       <header className="sticky top-0 z-40 backdrop-blur-md bg-black/70 border-b border-gold-700/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-0">
           <Link href="/dashboard" className="flex items-center gap-3 min-w-0">
