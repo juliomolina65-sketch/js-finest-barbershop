@@ -100,16 +100,34 @@ export default async function Home() {
       </section>
 
       {/* ============ ABOUT ============ */}
-      <section className="border-t border-gold-700/20">
-        <div className="max-w-4xl mx-auto px-6 py-20 md:py-28 text-center">
-          <p className="font-sans text-xs tracking-[0.4em] text-green-300 mb-4">
+      <section className="relative border-t border-gold-700/20 overflow-hidden">
+        {/* The real shop floor. Green leather and gold chairs are the brand
+            palette in the room itself, so it sits behind the copy rather than
+            as a separate photo block. */}
+        <Image
+          src="/shop-interior.webp"
+          alt="Inside J's Finest Barbershop — green leather and gold barber chairs beneath hexagon lighting"
+          fill
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        {/* Scrim: the ceiling lights are blown out, so the gold heading needs a
+            solid wash plus edge fades to blend into the sections above/below. */}
+        <div aria-hidden className="absolute inset-0 bg-black/70" />
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-b from-bg via-black/40 to-bg"
+        />
+
+        <div className="relative max-w-4xl mx-auto px-6 py-24 md:py-36 text-center">
+          <p className="font-sans text-xs tracking-[0.4em] text-green-200 mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
             {t.about.eyebrow}
           </p>
-          <h2 className="font-display text-3xl md:text-5xl text-gold-gradient mb-8">
+          <h2 className="font-display text-3xl md:text-5xl text-gold-gradient mb-8 drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]">
             {t.about.heading}
           </h2>
           <div className="divider-gold max-w-[120px] mx-auto mb-8" />
-          <p className="font-sans text-base md:text-lg text-white/80 leading-relaxed">
+          <p className="font-sans text-base md:text-lg text-white/90 leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)]">
             {t.about.body}
           </p>
         </div>

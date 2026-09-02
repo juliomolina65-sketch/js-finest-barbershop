@@ -74,6 +74,8 @@ export default function DaySlotGrid({
   t,
 }: Props) {
   const [openAdd, setOpenAdd] = useState<string | null>(null);
+  /** Custom-time form (any time, not just the 30-minute grid). */
+  const [customOpen, setCustomOpen] = useState(false);
   /** Appointment ID we're currently entering a tip for (after clicking DONE). */
   const [tippingFor, setTippingFor] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
@@ -111,6 +113,14 @@ export default function DaySlotGrid({
     ? new Date().getHours() * 60 + new Date().getMinutes()
     : -1;
 
+  // Seed the custom-time picker with something sensible: the next quarter hour
+  // if the shop is open now, otherwise opening time.
+  const defaultCustomTime = minToTime(
+    isToday && nowMin > openMin && nowMin < closeMin
+      ? Math.min(closeMin - 15, Math.ceil((nowMin + 5) / 15) * 15)
+      : openMin
+  );
+
   const slots: { startMin: number; entry: SlotEntry }[] = [];
   for (let t = openMin; t < closeMin; t += SLOT_STEP_MIN) {
     const slotStartIso = combineToIso(dateStr, minToTime(t));
@@ -143,6 +153,38 @@ export default function DaySlotGrid({
           {actionError}
         </div>
       )}
+
+      {/* Custom time — the grid below only offers 30-minute starts, which is
+          too rigid for a walk-in that shows up at 5:12. */}
+      <div className="mb-3">
+        {customOpen ? (
+          <div className="bg-bg-card border border-green-400/50 rounded-sm px-3 py-3">
+            <p className="font-sans text-[10px] tracking-[0.25em] text-green-300 mb-2">
+              {t.customTimeHint}
+            </p>
+            <QuickAdd
+              dateStr={dateStr}
+              timeStr={defaultCustomTime}
+              services={services}
+              editableTime
+              onDone={() => setCustomOpen(false)}
+              onError={setActionError}
+              t={t}
+            />
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => {
+              setCustomOpen(true);
+              setOpenAdd(null);
+            }}
+            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 text-[11px] tracking-[0.25em] font-semibold border border-green-400/50 text-green-100 rounded-sm hover:border-green-300 hover:bg-green-400/10 transition"
+          >
+            {t.customTime}
+          </button>
+        )}
+      </div>
 
       <div className="bg-bg-card border border-gold-700/30 rounded-sm overflow-hidden">
         {slots.map(({ startMin, entry }, idx) => {
@@ -429,6 +471,7 @@ function QuickAdd({
   onDone,
   onError,
   t,
+  editableTime = false,
 }: {
   dateStr: string;
   timeStr: string;
@@ -436,9 +479,12 @@ function QuickAdd({
   onDone: () => void;
   onError: (msg: string) => void;
   t: Dict["dashboard"]["slot"];
+  /** Show a time picker so the barber can book any minute, not just the grid. */
+  editableTime?: boolean;
 }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [time, setTime] = useState(timeStr);
   const [isPending, startTransition] = useTransition();
   const defaultService = services[0];
 
@@ -454,13 +500,17 @@ function QuickAdd({
       onError("No services configured. Ask the owner to add one.");
       return;
     }
+    if (editableTime && !time) {
+      onError(t.timeLabel);
+      return;
+    }
     const fd = new FormData();
     fd.append("customerName", trimmedName);
     fd.append("customerEmail", "");
     fd.append("customerPhone", trimmedPhone);
     fd.append("serviceId", defaultService.id);
     fd.append("date", dateStr);
-    fd.append("time", timeStr);
+    fd.append("time", editableTime ? time : timeStr);
     fd.append("notes", "");
     onError("");
     startTransition(async () => {
@@ -475,6 +525,20 @@ function QuickAdd({
 
   return (
     <form onSubmit={submit} className="flex items-center gap-2 flex-wrap">
+      {editableTime && (
+        <label className="flex items-center gap-2 shrink-0">
+          <span className="font-sans text-[10px] tracking-[0.2em] text-green-300">
+            {t.timeLabel.toUpperCase()}
+          </span>
+          <input
+            type="time"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            required
+            className="bg-bg border border-green-400/60 rounded-sm px-3 py-2 font-sans text-sm text-white focus:outline-none focus:border-green-300 transition"
+          />
+        </label>
+      )}
       <input
         type="text"
         value={name}
