@@ -6,6 +6,12 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["@prisma/client", ".prisma/client", "prisma"],
 
   images: {
+    // Next 16 restricts images.qualities to [75] by default and silently
+    // coerces anything else to the nearest allowed value. The hero logo is
+    // fine gold linework on black, where the default lossy pass is visible,
+    // so 95 has to be allowed explicitly for the quality prop to take effect.
+    qualities: [75, 95],
+
     // next/image serves two kinds of local files: build-time assets in
     // public/ (logo, PWA icons) and runtime uploads streamed by the
     // /uploads/[...path] route handler off the persistent volume.
