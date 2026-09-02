@@ -57,6 +57,9 @@ export async function updateBarberProfile(
       phone: phone || null,
       yearsExperience,
       specialties: JSON.stringify(specialties),
+      // Unchecked = hidden from the team page and the booking flow, while the
+      // account keeps working. Used by an owner who administrates but doesn't cut.
+      takesAppointments: formData.get("takesAppointments") === "on",
     },
   });
 

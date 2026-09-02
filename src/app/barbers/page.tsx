@@ -27,7 +27,7 @@ function shortBio(bio: string, maxLen = 140): string {
 export default async function BarbersIndex() {
   const t = (await getDict()).barbersIndex;
   const rows = await prisma.barber.findMany({
-    where: { isActive: true },
+    where: { isActive: true, takesAppointments: true },
     orderBy: [{ isOwner: "desc" }, { yearsExperience: "desc" }, { name: "asc" }],
   });
 

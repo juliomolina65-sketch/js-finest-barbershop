@@ -60,6 +60,7 @@ export default async function ProfileSettingsPage() {
       <ProfileClient
         initial={{
           slug: barber.slug,
+          takesAppointments: barber.takesAppointments,
           name: barber.name,
           role: barber.role,
           phone: barber.phone ?? "",

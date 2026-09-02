@@ -21,6 +21,7 @@ const DAY_LABELS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Fri
 type Props = {
   initial: {
     slug: string;
+    takesAppointments: boolean;
     name: string;
     role: string;
     phone: string;
@@ -410,6 +411,25 @@ function ProfileSection({ initial }: { initial: Props["initial"] }) {
           </span>
         </label>
       </div>
+
+      <label className="flex items-start gap-3 bg-bg-card border border-gold-700/30 rounded-sm px-4 py-3 cursor-pointer">
+        <input
+          type="checkbox"
+          name="takesAppointments"
+          defaultChecked={initial.takesAppointments}
+          className="mt-1 accent-[#3F8F63]"
+        />
+        <span>
+          <span className="font-sans text-xs tracking-[0.25em] text-green-300 block mb-1">
+            SHOW ME ON THE PUBLIC SITE
+          </span>
+          <span className="font-sans text-xs text-white/60">
+            Listed on Meet Our Barbers and bookable by customers. Uncheck if you
+            run the shop but don&apos;t take appointments — your login,
+            dashboard and admin access stay exactly the same.
+          </span>
+        </span>
+      </label>
 
       <SaveRow
         isPending={isPending}

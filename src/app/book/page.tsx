@@ -28,7 +28,7 @@ export default async function BookPage({
       orderBy: { sortOrder: "asc" },
     }),
     prisma.barber.findMany({
-      where: { isActive: true },
+      where: { isActive: true, takesAppointments: true },
       select: { id: true, slug: true, name: true, role: true },
       orderBy: { isOwner: "desc" },
     }),

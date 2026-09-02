@@ -45,6 +45,10 @@ model Barber {
   /// treated as admins; only the owner can grant or revoke this.
   isAdmin         Boolean  @default(false)
   isActive        Boolean  @default(true)
+  /// Whether this barber is shown publicly and can be booked. An owner who
+  /// only administrates keeps a fully working account (login, dashboard,
+  /// admin) while being hidden from the team page and the booking flow.
+  takesAppointments Boolean @default(true)
   preferredAppointments Appointment[] @relation("PreferredBarber")
   claimedAppointments   Appointment[] @relation("ClaimedBarber")
 }

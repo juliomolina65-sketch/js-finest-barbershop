@@ -30,7 +30,7 @@ export default async function Home() {
 
   // Show only 3 barbers on the landing — rest live behind "SEE ALL BARBERS".
   const barberRows = await prisma.barber.findMany({
-    where: { isActive: true },
+    where: { isActive: true, takesAppointments: true },
     orderBy: [{ isOwner: "desc" }, { yearsExperience: "desc" }, { name: "asc" }],
     take: 3,
   });

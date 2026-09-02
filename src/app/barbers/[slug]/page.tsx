@@ -107,9 +107,10 @@ export default async function BarberProfile({
   const { slug } = await params;
   const barber = await prisma.barber.findUnique({ where: { slug } });
   if (!barber) notFound();
-  // Inactive (pending / deactivated) profiles stay hidden from the public,
-  // but the owner can preview them from the admin page before approving.
-  if (!barber.isActive) {
+  // Hidden from the public when pending/deactivated, or when the barber
+  // doesn't take appointments (e.g. an owner who only administrates). The
+  // owner can still preview any profile from the admin page.
+  if (!barber.isActive || !barber.takesAppointments) {
     const viewer = await getCurrentBarber();
     if (!viewer?.isOwner) notFound();
   }

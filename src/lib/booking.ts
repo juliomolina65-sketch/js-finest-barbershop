@@ -63,7 +63,9 @@ export async function getAvailableSlots(
   const dayOfWeek = refDate.getDay();
 
   const barbers = await prisma.barber.findMany({
-    where: { isActive: true },
+    // Only bookable barbers create capacity — an admin-only owner must not
+    // make a slot look available.
+    where: { isActive: true, takesAppointments: true },
   });
 
   // Existing appointments that day (both PENDING and CONFIRMED hold capacity)
@@ -335,7 +337,9 @@ export async function getAvailableDates(
   });
   if (!service) return [];
 
-  const barbers = await prisma.barber.findMany({ where: { isActive: true } });
+  const barbers = await prisma.barber.findMany({
+    where: { isActive: true, takesAppointments: true },
+  });
   const allSchedules = barbers.map((b) => ({
     id: b.id,
     days: JSON.parse(b.weeklySchedule) as ScheduleDay[],
