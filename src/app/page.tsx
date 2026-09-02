@@ -113,10 +113,10 @@ export default async function Home() {
         />
         {/* Scrim: the ceiling lights are blown out, so the gold heading needs a
             solid wash plus edge fades to blend into the sections above/below. */}
-        <div aria-hidden className="absolute inset-0 bg-black/70" />
+        <div aria-hidden className="absolute inset-0 bg-black/45" />
         <div
           aria-hidden
-          className="absolute inset-0 bg-gradient-to-b from-bg via-black/40 to-bg"
+          className="absolute inset-0 bg-gradient-to-b from-bg via-black/25 to-bg"
         />
 
         <div className="relative max-w-4xl mx-auto px-6 py-24 md:py-36 text-center">

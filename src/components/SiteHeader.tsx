@@ -36,7 +36,7 @@ export default async function SiteHeader({ current = null }: Props) {
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm tracking-widest font-sans">
+        <nav className="hidden lg:flex items-center gap-5 xl:gap-7 text-sm tracking-widest font-sans">
           <Link href="/#services" className={cls("services")}>
             {t.services}
           </Link>
@@ -57,7 +57,7 @@ export default async function SiteHeader({ current = null }: Props) {
 
         <div className="flex items-center gap-2.5 sm:gap-4 shrink-0">
           {/* Social icons — inside the hamburger drawer below lg */}
-          <SocialLinks className="hidden lg:flex" />
+          <SocialLinks className="hidden xl:flex" />
           {/* Below sm these live inside the hamburger drawer instead */}
           <div className="hidden sm:block">
             <LanguageToggle
@@ -117,10 +117,10 @@ function ComingSoonItem({ label, note }: { label: string; note: string }) {
     <span
       aria-disabled="true"
       title={note}
-      className="inline-flex items-center gap-2 text-white/35 cursor-default select-none"
+      className="inline-flex items-center gap-2 text-white/35 cursor-default select-none whitespace-nowrap"
     >
       {label}
-      <span className="text-[9px] tracking-[0.15em] uppercase text-green-300/70 border border-green-700/50 rounded-sm px-1.5 py-0.5">
+      <span className="hidden xl:inline text-[9px] tracking-[0.15em] uppercase text-green-300/70 border border-green-700/50 rounded-sm px-1.5 py-0.5">
         {note}
       </span>
     </span>
