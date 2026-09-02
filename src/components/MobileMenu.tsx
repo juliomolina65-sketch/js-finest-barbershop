@@ -12,6 +12,9 @@ type Props = {
     barbers: string;
     visit: string;
     barberLogIn: string;
+    careers: string;
+    barberSchool: string;
+    comingSoon: string;
   };
 };
 
@@ -34,6 +37,10 @@ export default function MobileMenu({
     { key: "barbers", href: "/barbers", label: labels.barbers },
     { key: "visit", href: "/#visit", label: labels.visit },
   ];
+
+  // Sections that aren't live yet — listed so visitors know they're coming,
+  // but not linked anywhere.
+  const upcoming = [labels.careers, labels.barberSchool];
 
   return (
     <div className="md:hidden">
@@ -81,6 +88,19 @@ export default function MobileMenu({
               >
                 {item.label}
               </Link>
+            ))}
+
+            {upcoming.map((label) => (
+              <span
+                key={label}
+                aria-disabled="true"
+                className="py-3.5 border-b border-gold-700/15 text-white/35 flex items-center justify-between gap-3 cursor-default select-none"
+              >
+                {label}
+                <span className="text-[9px] tracking-[0.15em] uppercase text-green-300/70 border border-green-700/50 rounded-sm px-1.5 py-0.5 shrink-0">
+                  {labels.comingSoon}
+                </span>
+              </span>
             ))}
 
             {/* Barber log-in — the header hides it below sm. The language

@@ -49,6 +49,10 @@ export default async function SiteHeader({ current = null }: Props) {
           <Link href="/#visit" className={cls("visit")}>
             {t.visit}
           </Link>
+          {/* Not launched yet — rendered as disabled buttons rather than links
+              so they announce themselves as unavailable instead of 404ing. */}
+          <ComingSoonItem label={t.careers} note={t.comingSoon} />
+          <ComingSoonItem label={t.barberSchool} note={t.comingSoon} />
         </nav>
 
         <div className="flex items-center gap-2.5 sm:gap-4 shrink-0">
@@ -92,10 +96,33 @@ export default async function SiteHeader({ current = null }: Props) {
               barbers: t.barbers,
               visit: t.visit,
               barberLogIn: t.barberLogIn,
+              careers: t.careers,
+              barberSchool: t.barberSchool,
+              comingSoon: t.comingSoon,
             }}
           />
         </div>
       </div>
     </header>
+  );
+}
+
+/**
+ * A nav entry for a section that doesn't exist yet. Disabled on purpose: it
+ * shows up in the menu so visitors know it's coming, but can't be clicked
+ * through to a missing page. The label is greyed and tagged "Coming soon".
+ */
+function ComingSoonItem({ label, note }: { label: string; note: string }) {
+  return (
+    <span
+      aria-disabled="true"
+      title={note}
+      className="inline-flex items-center gap-2 text-white/35 cursor-default select-none"
+    >
+      {label}
+      <span className="text-[9px] tracking-[0.15em] uppercase text-green-300/70 border border-green-700/50 rounded-sm px-1.5 py-0.5">
+        {note}
+      </span>
+    </span>
   );
 }
