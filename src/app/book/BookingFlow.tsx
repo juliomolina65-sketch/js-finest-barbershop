@@ -31,9 +31,25 @@ type Props = {
   /** Pre-selected barber slug from /book?barber=<slug> deep links. */
   initialBarberSlug?: string | null;
   t: Dict["book"];
+  /** Slug-keyed service translations, passed down from the page. */
+  serviceCatalog: ServiceCatalog;
 };
 
 const ANY_BARBER = "any" as const;
+
+/**
+ * Services are stored in the database in English. These helpers swap in the
+ * reader's language using the slug-keyed catalog from i18n, falling back to the
+ * stored value for any service that has no translation yet.
+ */
+type ServiceCatalog = Dict["landing"]["serviceCatalog"];
+
+function serviceName(s: ServiceLite, catalog: ServiceCatalog): string {
+  return catalog[s.slug as keyof ServiceCatalog]?.name ?? s.name;
+}
+function serviceDesc(s: ServiceLite, catalog: ServiceCatalog): string {
+  return catalog[s.slug as keyof ServiceCatalog]?.desc ?? s.description;
+}
 
 function money(cents: number) {
   return `$${(cents / 100).toFixed(0)}`;
@@ -68,6 +84,7 @@ export default function BookingFlow({
   candidateDates,
   initialBarberSlug = null,
   t,
+  serviceCatalog,
 }: Props) {
   const router = useRouter();
   const dur = useMemo(() => makeDur(t.durationMin, t.hour), [t]);
@@ -284,14 +301,14 @@ export default function BookingFlow({
                 >
                   <div className="flex items-start justify-between gap-4 mb-2">
                     <h3 className="font-display text-xl text-gold-100">
-                      {s.name}
+                      {serviceName(s, serviceCatalog)}
                     </h3>
                     <span className="font-display text-xl text-gold-gradient shrink-0">
                       {money(s.priceCents)}
                     </span>
                   </div>
                   <p className="font-sans text-sm text-white/70 mb-3 leading-relaxed">
-                    {s.description}
+                    {serviceDesc(s, serviceCatalog)}
                   </p>
                   <p className="font-sans text-xs tracking-[0.25em] text-green-300">
                     {dur(s.durationMin)}
@@ -314,7 +331,7 @@ export default function BookingFlow({
                 {t.backLink}
               </button>
               <p className="font-sans text-xs tracking-[0.25em] text-white/60">
-                {service.name} · {dur(service.durationMin)}
+                {serviceName(service, serviceCatalog)} · {dur(service.durationMin)}
               </p>
             </div>
             <h2 className="font-display text-2xl md:text-3xl text-gold-gradient mb-6 text-center">
@@ -492,7 +509,7 @@ export default function BookingFlow({
                 {t.backLink}
               </button>
               <p className="font-sans text-xs tracking-[0.25em] text-white/60 text-right">
-                {service.name} · {fmtDay(dateStr!)} · {fmtSlotTime(slot.startAt)}
+                {serviceName(service, serviceCatalog)} · {fmtDay(dateStr!)} · {fmtSlotTime(slot.startAt)}
                 <br />
                 {barberChoice === ANY_BARBER
                   ? t.anyoneAvailable

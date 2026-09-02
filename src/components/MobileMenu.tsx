@@ -2,9 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import LanguageToggle from "./LanguageToggle";
 import SocialLinks from "./SocialLinks";
-import type { Locale } from "@/lib/i18n";
 
 type Props = {
   current: string | null;
@@ -15,9 +13,6 @@ type Props = {
     visit: string;
     barberLogIn: string;
   };
-  locale: Locale;
-  langOtherLabel: string;
-  langSwitchToLabel: string;
 };
 
 /**
@@ -29,9 +24,6 @@ type Props = {
 export default function MobileMenu({
   current,
   labels,
-  locale,
-  langOtherLabel,
-  langSwitchToLabel,
 }: Props) {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
@@ -91,13 +83,9 @@ export default function MobileMenu({
               </Link>
             ))}
 
-            {/* Below sm the header hides these two — surface them here */}
-            <div className="sm:hidden flex items-center justify-between gap-3 py-4">
-              <LanguageToggle
-                current={locale}
-                otherLabel={langOtherLabel}
-                switchToLabel={langSwitchToLabel}
-              />
+            {/* Barber log-in — the header hides it below sm. The language
+                toggle is NOT repeated here: it now sits next to BOOK NOW. */}
+            <div className="sm:hidden flex items-center justify-end py-4">
               <Link
                 href="/login"
                 onClick={close}

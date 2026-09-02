@@ -78,6 +78,7 @@ export default async function BookPage({
         candidateDates={candidateDates}
         initialBarberSlug={initialBarberSlug}
         t={t}
+        serviceCatalog={dict.landing.serviceCatalog}
       />
 
       <footer className="border-t border-gold-700/30 bg-black">

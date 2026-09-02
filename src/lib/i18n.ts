@@ -71,6 +71,38 @@ export const messages = {
         eyebrow: "THE MENU",
         heading: "Services",
       },
+      /**
+       * Service names/descriptions keyed by the DB `slug`. The homepage renders
+       * these directly, and the booking flow looks them up by slug so services
+       * stored in English still display in the reader's language. Any service
+       * without an entry here falls back to the name stored in the database.
+       */
+      serviceCatalog: {
+        "classic-cut": {
+          name: "Classic Cut",
+          desc: "Precision haircut tailored to your style. Hot towel finish included.",
+        },
+        "skin-fade": {
+          name: "Skin Fade",
+          desc: "Razor-sharp fade — from skin to a clean blend, finished to perfection.",
+        },
+        "beard-trim": {
+          name: "Beard Trim & Lineup",
+          desc: "Detailed beard sculpting with crisp lines, hot towel, and beard oil.",
+        },
+        "hot-towel-shave": {
+          name: "Hot Towel Shave",
+          desc: "The classic straight-razor experience — hot towels, oil, and a smooth finish.",
+        },
+        "kids-cut": {
+          name: "Kid's Cut (12 & under)",
+          desc: "Patient, careful cuts for the next generation. Lollipop included.",
+        },
+        "finest-package": {
+          name: "The Finest Package",
+          desc: "Cut + beard + hot towel shave. The full experience — head to chin.",
+        },
+      },
       work: {
         eyebrow: "THE WORK",
         heading: "Our Work",
@@ -356,6 +388,32 @@ export const messages = {
       services: {
         eyebrow: "EL MENÚ",
         heading: "Servicios",
+      },
+      serviceCatalog: {
+        "classic-cut": {
+          name: "Corte Clásico",
+          desc: "Corte de precisión adaptado a tu estilo. Incluye acabado con toalla caliente.",
+        },
+        "skin-fade": {
+          name: "Fade a la Piel",
+          desc: "Degradado impecable — de la piel a una mezcla limpia, rematado a la perfección.",
+        },
+        "beard-trim": {
+          name: "Barba y Perfilado",
+          desc: "Barba esculpida al detalle con líneas nítidas, toalla caliente y aceite.",
+        },
+        "hot-towel-shave": {
+          name: "Afeitado con Toalla Caliente",
+          desc: "La experiencia clásica a navaja — toallas calientes, aceite y un acabado suave.",
+        },
+        "kids-cut": {
+          name: "Corte para Niños (12 y menores)",
+          desc: "Cortes pacientes y cuidadosos para la próxima generación. Paleta incluida.",
+        },
+        "finest-package": {
+          name: "El Paquete Finest",
+          desc: "Corte + barba + afeitado con toalla caliente. La experiencia completa.",
+        },
       },
       work: {
         eyebrow: "EL TRABAJO",

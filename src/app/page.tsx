@@ -5,44 +5,23 @@ import { getHomepageWorkGallery, getBarberPhoto } from "@/lib/barber-assets";
 import SiteHeader from "@/components/SiteHeader";
 import WorkGallery from "@/components/WorkGallery";
 import SocialLinks from "@/components/SocialLinks";
-import { getDict } from "@/lib/i18n";
+import { getDict, type Dict } from "@/lib/i18n";
 
 // Live DB read so approved barbers appear without a redeploy.
 export const dynamic = "force-dynamic";
 
-type Service = { name: string; price: string; desc: string };
-
-const services: Service[] = [
-  {
-    name: "Classic Cut",
-    price: "$30",
-    desc: "Precision haircut tailored to your style. Hot towel finish included.",
-  },
-  {
-    name: "Skin Fade",
-    price: "$35",
-    desc: "Razor-sharp fade — from skin to a clean blend, finished to perfection.",
-  },
-  {
-    name: "Beard Trim & Lineup",
-    price: "$20",
-    desc: "Detailed beard sculpting with crisp lines, hot towel, and beard oil.",
-  },
-  {
-    name: "Hot Towel Shave",
-    price: "$35",
-    desc: "The classic straight-razor experience — hot towels, oil, and a smooth finish.",
-  },
-  {
-    name: "Kid's Cut (12 & under)",
-    price: "$22",
-    desc: "Patient, careful cuts for the next generation. Lollipop included.",
-  },
-  {
-    name: "The Finest Package",
-    price: "$60",
-    desc: "Cut + beard + hot towel shave. The full experience — head to chin.",
-  },
+/**
+ * Menu shown on the homepage. Prices live here; names and descriptions come
+ * from the translated catalog in i18n (keyed by the same slug the database
+ * uses), so the menu renders in the reader's language.
+ */
+const SERVICE_MENU: { slug: keyof Dict["landing"]["serviceCatalog"]; price: string }[] = [
+  { slug: "classic-cut", price: "$30" },
+  { slug: "skin-fade", price: "$35" },
+  { slug: "beard-trim", price: "$20" },
+  { slug: "hot-towel-shave", price: "$35" },
+  { slug: "kids-cut", price: "$22" },
+  { slug: "finest-package", price: "$60" },
 ];
 
 export default async function Home() {
@@ -151,24 +130,27 @@ export default async function Home() {
 
           {/* Mobile: horizontal swipe carousel (next card peeks in). md+: grid. */}
           <div className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-4 -mx-6 px-6 pb-2 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 md:overflow-visible md:mx-0 md:px-0 md:pb-0">
-            {services.map((s) => (
-              <article
-                key={s.name}
-                className="group relative snap-center shrink-0 w-[80%] sm:w-[46%] md:w-auto md:shrink bg-bg-card border border-gold-700/30 rounded-sm p-6 md:p-8 hover:border-gold-400/60 transition"
-              >
-                <div className="flex items-start justify-between gap-4 mb-3">
-                  <h3 className="font-display text-xl md:text-2xl text-gold-100">
-                    {s.name}
-                  </h3>
-                  <span className="font-display text-2xl text-gold-gradient shrink-0">
-                    {s.price}
-                  </span>
-                </div>
-                <p className="font-sans text-sm text-white/70 leading-relaxed">
-                  {s.desc}
-                </p>
-              </article>
-            ))}
+            {SERVICE_MENU.map(({ slug, price }) => {
+              const item = t.serviceCatalog[slug];
+              return (
+                <article
+                  key={slug}
+                  className="group relative snap-center shrink-0 w-[80%] sm:w-[46%] md:w-auto md:shrink bg-bg-card border border-gold-700/30 rounded-sm p-6 md:p-8 hover:border-gold-400/60 transition"
+                >
+                  <div className="flex items-start justify-between gap-4 mb-3">
+                    <h3 className="font-display text-xl md:text-2xl text-gold-100">
+                      {item.name}
+                    </h3>
+                    <span className="font-display text-2xl text-gold-gradient shrink-0">
+                      {price}
+                    </span>
+                  </div>
+                  <p className="font-sans text-sm text-white/70 leading-relaxed">
+                    {item.desc}
+                  </p>
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>

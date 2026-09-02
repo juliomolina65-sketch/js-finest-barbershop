@@ -68,6 +68,16 @@ export default async function SiteHeader({ current = null }: Props) {
           >
             {t.barberLogIn}
           </Link>
+          {/* Compact language pill — visible on phones (where the full toggle
+              is hidden) so Spanish speakers can switch without opening the menu. */}
+          <div className="sm:hidden">
+            <LanguageToggle
+              current={locale}
+              otherLabel={lt.otherLabel}
+              switchToLabel={lt.switchTo}
+              variant="compact"
+            />
+          </div>
           <Link
             href="/book"
             className="inline-flex items-center px-4 sm:px-5 py-2.5 text-xs tracking-[0.25em] font-semibold bg-gradient-to-b from-gold-100 to-gold-600 text-black rounded-sm hover:brightness-110 transition"
@@ -83,9 +93,6 @@ export default async function SiteHeader({ current = null }: Props) {
               visit: t.visit,
               barberLogIn: t.barberLogIn,
             }}
-            locale={locale}
-            langOtherLabel={lt.otherLabel}
-            langSwitchToLabel={lt.switchTo}
           />
         </div>
       </div>
