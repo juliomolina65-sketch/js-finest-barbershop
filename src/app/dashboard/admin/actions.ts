@@ -13,11 +13,19 @@ async function requireOwner() {
   return current;
 }
 
+/** Owner or admin: approving, deactivating and reactivating barbers. */
+async function requireAdmin() {
+  const current = await getCurrentBarber();
+  if (!current) throw new Error("Not authenticated");
+  if (!current.isOwner && !current.isAdmin) throw new Error("Admins only");
+  return current;
+}
+
 /** Approve a pending barber: flip isActive to true so they can log in. */
 export async function approveBarber(
   barberId: string
 ): Promise<AdminActionResult> {
-  await requireOwner();
+  await requireAdmin();
   const barber = await prisma.barber.findUnique({ where: { id: barberId } });
   if (!barber) return { ok: false, error: "Barber not found." };
   if (barber.isActive) return { ok: false, error: "Already active." };
@@ -34,12 +42,17 @@ export async function approveBarber(
 export async function deactivateBarber(
   barberId: string
 ): Promise<AdminActionResult> {
-  const owner = await requireOwner();
-  if (barberId === owner.id) {
+  const current = await requireAdmin();
+  if (barberId === current.id) {
     return { ok: false, error: "You can't deactivate yourself." };
   }
   const barber = await prisma.barber.findUnique({ where: { id: barberId } });
   if (!barber) return { ok: false, error: "Barber not found." };
+  if (barber.isOwner) return { ok: false, error: "The owner can't be deactivated." };
+  // Admins manage barbers; only the owner can deactivate another admin.
+  if (barber.isAdmin && !current.isOwner) {
+    return { ok: false, error: "Only the owner can deactivate an admin." };
+  }
   if (!barber.isActive) return { ok: false, error: "Already deactivated." };
   await prisma.barber.update({
     where: { id: barberId },
@@ -54,7 +67,7 @@ export async function deactivateBarber(
 export async function reactivateBarber(
   barberId: string
 ): Promise<AdminActionResult> {
-  await requireOwner();
+  await requireAdmin();
   const barber = await prisma.barber.findUnique({ where: { id: barberId } });
   if (!barber) return { ok: false, error: "Barber not found." };
   if (barber.isActive) return { ok: false, error: "Already active." };

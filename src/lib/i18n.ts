@@ -172,6 +172,11 @@ export const messages = {
         emptyHint: "Drop photos and they'll appear here automatically.",
       },
       specialties: "SPECIALTIES",
+      cutMenu: {
+        eyebrow: "CUTS & PRICES",
+        headingPrefix: "Book With",
+        cta: "BOOK NOW",
+      },
       availability: "AVAILABILITY",
       onlineBookingNote: "Online booking with live time slots coming soon.",
       closed: "Closed",
@@ -491,6 +496,11 @@ export const messages = {
         emptyHint: "Sube fotos y aparecerán aquí automáticamente.",
       },
       specialties: "ESPECIALIDADES",
+      cutMenu: {
+        eyebrow: "CORTES Y PRECIOS",
+        headingPrefix: "Reserva Con",
+        cta: "RESERVAR",
+      },
       availability: "DISPONIBILIDAD",
       onlineBookingNote: "Reservas con horarios en vivo próximamente.",
       closed: "Cerrado",

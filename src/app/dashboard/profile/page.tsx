@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getCurrentBarber } from "@/lib/auth";
 import { getBarberPhoto, getBarberPortfolio, getBarberPortfolioFilenames } from "@/lib/barber-assets";
 import type { ScheduleDay } from "@/lib/booking";
+import { parseCutMenu } from "@/lib/cut-menu";
 import ProfileClient from "./ProfileClient";
 
 export const dynamic = "force-dynamic";
@@ -67,6 +68,7 @@ export default async function ProfileSettingsPage() {
           yearsExperience: barber.yearsExperience,
           bio: barber.bio,
           specialties,
+          cutMenu: parseCutMenu(barber.cutMenu),
           weeklySchedule: fullWeek,
           profilePhoto: getBarberPhoto(barber.slug),
           portfolio: getBarberPortfolioFilenames(barber.slug).map((filename) => ({

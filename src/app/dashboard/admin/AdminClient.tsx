@@ -28,9 +28,12 @@ type BarberRow = {
 export default function AdminClient({
   barbers,
   currentOwnerId,
+  canManageAdmins,
 }: {
   barbers: BarberRow[];
   currentOwnerId: string;
+  /** Only the owner grants or removes admin rights and deactivates admins. */
+  canManageAdmins: boolean;
 }) {
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -123,7 +126,7 @@ export default function AdminClient({
               )}
 
               {/* Admin rights — owner keeps them permanently, so no toggle there */}
-              {!b.isOwner && b.isActive && !b.isPending && (
+              {canManageAdmins && !b.isOwner && b.isActive && !b.isPending && (
                 b.isAdmin ? (
                   <button
                     type="button"
@@ -146,6 +149,7 @@ export default function AdminClient({
               )}
 
               {!b.isOwner &&
+                (canManageAdmins || !b.isAdmin) &&
                 b.isActive &&
                 !b.isPending &&
                 b.id !== currentOwnerId && (

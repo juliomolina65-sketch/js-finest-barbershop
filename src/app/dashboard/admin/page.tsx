@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export default async function AdminPage() {
   const current = await getCurrentBarber();
   if (!current) redirect("/login");
-  if (!current.isOwner) redirect("/dashboard");
+  if (!current.isOwner && !current.isAdmin) redirect("/dashboard");
 
   const barbers = await prisma.barber.findMany({
     orderBy: [{ isOwner: "desc" }, { isActive: "desc" }, { name: "asc" }],
@@ -30,7 +30,7 @@ export default async function AdminPage() {
     <section className="flex-1 max-w-6xl w-full mx-auto px-6 py-8 md:py-12">
       <div className="mb-8">
         <p className="font-sans text-xs tracking-[0.4em] text-green-300">
-          OWNER ONLY
+          {current.isOwner ? "OWNER" : "ADMIN"}
         </p>
         <h1 className="font-display text-4xl md:text-5xl text-gold-gradient">
           Manage Barbers
@@ -65,6 +65,7 @@ export default async function AdminPage() {
           confirmedAppointmentCount: b._count.claimedAppointments,
         }))}
         currentOwnerId={current.id}
+        canManageAdmins={current.isOwner}
       />
 
       <div className="mt-10">

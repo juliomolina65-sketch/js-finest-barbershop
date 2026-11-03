@@ -202,8 +202,8 @@ export async function cancelAppointment(
     where: { id: appointmentId },
   });
   if (!appt) return { ok: false, error: "Appointment not found." };
-  // Owner can cancel anything; barbers can only cancel their own
-  if (!barber.isOwner && appt.claimedById !== barber.id) {
+  // Owner and admins can cancel anything; barbers can only cancel their own
+  if (!barber.isOwner && !barber.isAdmin && appt.claimedById !== barber.id) {
     return { ok: false, error: "You can only cancel your own appointments." };
   }
   if (appt.status === "COMPLETED") {

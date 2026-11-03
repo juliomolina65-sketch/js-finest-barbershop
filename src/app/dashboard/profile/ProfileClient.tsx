@@ -11,6 +11,7 @@ import {
   removeWorkPhoto,
 } from "./photo-actions";
 import type { ScheduleDay } from "@/lib/booking";
+import { CUT_MENU_MAX_ITEMS, type CutMenuItem } from "@/lib/cut-menu";
 
 /** Must stay under next.config.ts experimental.proxyClientMaxBodySize. */
 const MAX_BATCH_MB = 55;
@@ -28,6 +29,7 @@ type Props = {
     yearsExperience: number;
     bio: string;
     specialties: string[];
+    cutMenu: CutMenuItem[];
     weeklySchedule: ScheduleDay[];
     profilePhoto: string | null;
     portfolio: { url: string; filename: string }[];
@@ -412,6 +414,8 @@ function ProfileSection({ initial }: { initial: Props["initial"] }) {
         </label>
       </div>
 
+      <CutMenuEditor initial={initial.cutMenu} />
+
       <label className="flex items-start gap-3 bg-bg-card border border-gold-700/30 rounded-sm px-4 py-3 cursor-pointer">
         <input
           type="checkbox"
@@ -634,5 +638,120 @@ function Field({
         </span>
       )}
     </label>
+  );
+}
+
+type CutRow = { key: number; name: string; price: string; note: string };
+
+/**
+ * The barber's own cuts and prices. Rows live in local state and are sent with
+ * the profile form as one JSON field ("cutMenu"); the server cleans it again.
+ */
+function CutMenuEditor({ initial }: { initial: CutMenuItem[] }) {
+  const nextKey = useRef(initial.length);
+  const [rows, setRows] = useState<CutRow[]>(() =>
+    initial.map((c, i) => ({
+      key: i,
+      name: c.name,
+      price: String(c.priceCents / 100),
+      note: c.note ?? "",
+    }))
+  );
+
+  const payload = JSON.stringify(
+    rows
+      .filter((r) => r.name.trim() && r.price.trim() !== "")
+      .map((r) => ({
+        name: r.name.trim(),
+        priceCents: Math.round(Number(r.price) * 100),
+        note: r.note.trim(),
+      }))
+  );
+
+  function update(key: number, field: "name" | "price" | "note", value: string) {
+    setRows((prev) => prev.map((r) => (r.key === key ? { ...r, [field]: value } : r)));
+  }
+  function addRow() {
+    setRows((prev) => [...prev, { key: nextKey.current++, name: "", price: "", note: "" }]);
+  }
+  function removeRow(key: number) {
+    setRows((prev) => prev.filter((r) => r.key !== key));
+  }
+
+  const inputClass =
+    "w-full bg-bg-card border border-gold-700/40 rounded-sm px-3 py-2 font-sans text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-green-400 transition";
+
+  return (
+    <div>
+      <span className="font-sans text-xs tracking-[0.25em] text-green-300 block mb-2">
+        MY CUTS &amp; PRICES
+      </span>
+      <input type="hidden" name="cutMenu" value={payload} />
+      {rows.length > 0 && (
+        <ul className="space-y-3 mb-3">
+          {rows.map((r) => (
+            <li
+              key={r.key}
+              className="grid grid-cols-[1fr_6.5rem_auto] sm:grid-cols-[1fr_6.5rem_1fr_auto] gap-2 items-center"
+            >
+              <input
+                value={r.name}
+                onChange={(e) => update(r.key, "name", e.target.value)}
+                placeholder="Cut — e.g. Skin Fade"
+                maxLength={60}
+                aria-label="Cut name"
+                className={inputClass}
+              />
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 font-sans text-sm text-white/50">
+                  $
+                </span>
+                <input
+                  value={r.price}
+                  onChange={(e) => update(r.key, "price", e.target.value)}
+                  placeholder="35"
+                  type="number"
+                  min={0}
+                  max={1000}
+                  step="0.01"
+                  inputMode="decimal"
+                  aria-label="Price in dollars"
+                  className={`${inputClass} pl-7`}
+                />
+              </div>
+              <input
+                value={r.note}
+                onChange={(e) => update(r.key, "note", e.target.value)}
+                placeholder="Note (optional) — e.g. includes beard"
+                maxLength={80}
+                aria-label="Note"
+                className={`${inputClass} col-span-2 sm:col-span-1 order-last sm:order-none`}
+              />
+              <button
+                type="button"
+                onClick={() => removeRow(r.key)}
+                aria-label={`Remove ${r.name || "this cut"}`}
+                className="px-3 py-2 font-sans text-xs tracking-[0.2em] text-pole-red/90 hover:text-pole-red transition"
+              >
+                REMOVE
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+      {rows.length < CUT_MENU_MAX_ITEMS && (
+        <button
+          type="button"
+          onClick={addRow}
+          className="inline-flex items-center px-4 py-2 text-[10px] tracking-[0.25em] font-semibold border border-green-400/50 text-green-100 rounded-sm hover:bg-green-400/10 transition"
+        >
+          + ADD A CUT
+        </button>
+      )}
+      <span className="font-sans text-xs text-white/50 mt-2 block">
+        The cuts you do and what you charge. Shown on your public profile. Click
+        SAVE PROFILE when you&apos;re done.
+      </span>
+    </div>
   );
 }

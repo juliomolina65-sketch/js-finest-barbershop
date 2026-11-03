@@ -108,6 +108,20 @@ node -e "console.log(require('crypto').randomBytes(48).toString('base64'))"
 
 If `SESSION_SECRET` ever changes, everyone is logged out — set it once and leave it.
 
+### Text messages to barbers (optional)
+
+When someone books, the barber gets a text: the chosen barber for a direct
+booking, or every barber free at that time for "Anyone Available". Barbers
+receive texts at the phone number in their Edit Profile. Add these three
+variables from your Twilio account to turn it on (without them, bookings work
+and no texts are sent):
+
+| Variable | Value |
+|---|---|
+| `TWILIO_ACCOUNT_SID` | starts with `AC`, from the Twilio console |
+| `TWILIO_AUTH_TOKEN` | from the Twilio console |
+| `TWILIO_FROM` | your Twilio number, e.g. `+18885551234` |
+
 ---
 
 ## Step 6 — Deploy

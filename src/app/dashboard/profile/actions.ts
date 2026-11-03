@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
 import { getCurrentBarber } from "@/lib/auth";
+import { parseCutMenu } from "@/lib/cut-menu";
 
 export type ProfileActionResult =
   | { ok: true }
@@ -29,6 +30,8 @@ export async function updateBarberProfile(
   const phone = String(formData.get("phone") ?? "").trim();
   const yearsRaw = String(formData.get("yearsExperience") ?? "0");
   const specialtiesRaw = String(formData.get("specialties") ?? "");
+  // Cuts & prices arrive as JSON from the editor; parseCutMenu drops anything invalid.
+  const cutMenu = parseCutMenu(String(formData.get("cutMenu") ?? "[]"));
 
   if (!name) return { ok: false, error: "Name is required." };
   if (!role) return { ok: false, error: "Role is required." };
@@ -57,6 +60,7 @@ export async function updateBarberProfile(
       phone: phone || null,
       yearsExperience,
       specialties: JSON.stringify(specialties),
+      cutMenu: JSON.stringify(cutMenu),
       // Unchecked = hidden from the team page and the booking flow, while the
       // account keeps working. Used by an owner who administrates but doesn't cut.
       takesAppointments: formData.get("takesAppointments") === "on",

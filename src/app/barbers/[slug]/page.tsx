@@ -11,6 +11,7 @@ import BarberAvailability, {
 import { getBarberOpenWindows, type ScheduleDay } from "@/lib/booking";
 import { getCurrentBarber } from "@/lib/auth";
 import { getDict } from "@/lib/i18n";
+import { formatPrice, parseCutMenu } from "@/lib/cut-menu";
 
 // Live from the DB so newly approved barbers' profiles are reachable immediately.
 export const dynamic = "force-dynamic";
@@ -126,6 +127,7 @@ export default async function BarberProfile({
       return [];
     }
   })();
+  const cutMenu = parseCutMenu(barber.cutMenu);
   const schedule = formatSchedule(barber.weeklySchedule, t.closed);
 
   const availability = await getBarberOpenWindows(barber.id, 7);
@@ -256,6 +258,50 @@ export default async function BarberProfile({
             <p className="font-sans text-base md:text-lg text-white/80 leading-relaxed text-center whitespace-pre-line">
               {barber.bio}
             </p>
+          </div>
+        </section>
+      )}
+
+      {/* ============ CUTS & PRICES ============ */}
+      {cutMenu.length > 0 && (
+        <section className="border-t border-gold-700/20">
+          <div className="max-w-3xl mx-auto px-6 py-16 md:py-20">
+            <p className="font-sans text-xs tracking-[0.4em] text-green-300 mb-3 text-center">
+              {t.cutMenu.eyebrow}
+            </p>
+            <h2 className="font-display text-3xl md:text-4xl text-gold-gradient text-center mb-6">
+              {t.cutMenu.headingPrefix} {barber.name}
+            </h2>
+            <div className="divider-gold max-w-[120px] mx-auto mb-10" />
+            <ul className="space-y-4">
+              {cutMenu.map((c, i) => (
+                <li
+                  key={`${c.name}-${i}`}
+                  className="flex items-baseline gap-3 border-b border-gold-700/20 pb-4"
+                >
+                  <div className="min-w-0">
+                    <p className="font-display text-lg md:text-xl text-gold-100 tracking-wide">
+                      {c.name}
+                    </p>
+                    {c.note && (
+                      <p className="font-sans text-sm text-white/60 mt-0.5">{c.note}</p>
+                    )}
+                  </div>
+                  <span aria-hidden className="flex-1 border-b border-dotted border-gold-700/40 translate-y-[-4px]" />
+                  <span className="font-display text-xl md:text-2xl text-green-200 shrink-0">
+                    {formatPrice(c.priceCents)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <div className="text-center mt-10">
+              <Link
+                href={`/book?barber=${barber.slug}`}
+                className="inline-flex items-center px-6 py-3 text-xs tracking-[0.3em] font-semibold bg-gradient-to-b from-gold-100 to-gold-600 text-black rounded-sm hover:brightness-110 transition"
+              >
+                {t.cutMenu.cta}
+              </Link>
+            </div>
           </div>
         </section>
       )}

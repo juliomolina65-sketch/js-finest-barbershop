@@ -1,4 +1,5 @@
 import { prisma } from "./db";
+import { sendSms, toE164 } from "./sms";
 
 /** Schedule entry stored as JSON on each Barber row. */
 export type ScheduleDay = {
@@ -449,5 +450,49 @@ export async function createReservation(params: {
     },
   });
 
+  await notifyBarbersOfBooking({
+    barberIds: isDirectBooking ? [preferredBarberId!] : matching.availableBarberIds,
+    isDirectBooking,
+    customerName: customer.name.trim(),
+    customerPhone: customer.phone.trim(),
+    serviceName: service.name,
+    start,
+  });
+
   return { ok: true, token: appt.cancelToken, appointmentId: appt.id };
+}
+
+const SITE_URL = (process.env.SITE_URL || "https://www.js-finestbarbershop.com").replace(/\/$/, "");
+
+/**
+ * Texts the barber(s) about a new booking: the chosen barber for a direct
+ * booking, or every barber free at that time for "Anyone Available" (first one
+ * to claim it in the dashboard gets it). Barbers without a phone are skipped.
+ */
+async function notifyBarbersOfBooking(b: {
+  barberIds: string[];
+  isDirectBooking: boolean;
+  customerName: string;
+  customerPhone: string;
+  serviceName: string;
+  start: Date;
+}) {
+  if (b.barberIds.length === 0) return;
+  const barbers = await prisma.barber.findMany({
+    where: { id: { in: b.barberIds }, isActive: true },
+    select: { phone: true },
+  });
+  const when = b.start.toLocaleString("en-US", {
+    timeZone: "America/Chicago",
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+  const body = b.isDirectBooking
+    ? `J's Finest: New booking for you! ${b.customerName}, ${b.serviceName}, ${when}. Customer phone: ${b.customerPhone}. ${SITE_URL}/dashboard`
+    : `J's Finest: New open appointment, ${b.serviceName}, ${when} (${b.customerName}). First barber to claim it gets it: ${SITE_URL}/dashboard`;
+  const numbers = [...new Set(barbers.map((x) => toE164(x.phone)).filter((n): n is string => Boolean(n)))];
+  await Promise.all(numbers.map((to) => sendSms(to, body)));
 }

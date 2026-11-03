@@ -40,6 +40,9 @@ model Barber {
   weeklySchedule  String   @default("[]")
   /// JSON array of specialty strings
   specialties     String   @default("[]")
+  /// JSON: the barber's own cuts and prices, shown on their public profile.
+  /// [{ name: string, priceCents: number, note?: string }, ...]
+  cutMenu         String   @default("[]")
   isOwner         Boolean  @default(false)
   /// Admins can manage the homepage "Our Work" gallery. Owners are always
   /// treated as admins; only the owner can grant or revoke this.

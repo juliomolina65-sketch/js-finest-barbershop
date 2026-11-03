@@ -60,7 +60,7 @@ export default async function DashboardLayout({
                 OUR WORK
               </Link>
             )}
-            {barber.isOwner && (
+            {(barber.isOwner || barber.isAdmin) && (
               <Link
                 href="/dashboard/admin"
                 className="inline-flex items-center font-sans text-xs tracking-[0.25em] text-gold-200 hover:text-gold-100 border border-gold-400/40 rounded-sm px-3 py-1.5 transition"
