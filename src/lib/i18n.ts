@@ -320,6 +320,11 @@ export const messages = {
     },
     dashboard: {
       portalLabel: "· BARBER PORTAL",
+      phoneBanner: {
+        heading: "Add your cell number to get booking texts",
+        body: "When a customer books with you, we text you the name, service and time right away. Add your phone in Edit Profile to turn it on.",
+        cta: "ADD MY PHONE",
+      },
       nav: {
         calendar: "CALENDAR",
         history: "HISTORY",
@@ -649,6 +654,11 @@ export const messages = {
     },
     dashboard: {
       portalLabel: "· PORTAL DE BARBEROS",
+      phoneBanner: {
+        heading: "Agrega tu celular para recibir textos de citas",
+        body: "Cuando un cliente reserva contigo, te enviamos un texto con el nombre, servicio y hora al instante. Agrega tu teléfono en Editar Perfil para activarlo.",
+        cta: "AGREGAR MI TELÉFONO",
+      },
       nav: {
         calendar: "CALENDARIO",
         history: "HISTORIAL",

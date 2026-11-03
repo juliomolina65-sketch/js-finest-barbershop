@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getCurrentBarber } from "@/lib/auth";
 import { logoutBarber } from "../(auth)/actions";
 import { getDict } from "@/lib/i18n";
+import { toE164 } from "@/lib/sms";
 
 export const dynamic = "force-dynamic";
 
@@ -89,6 +90,24 @@ export default async function DashboardLayout({
           </div>
         </div>
       </header>
+
+      {/* Booking texts go to Barber.phone, so nudge bookable barbers who haven't added one. */}
+      {barber.takesAppointments && !toE164(barber.phone) && (
+        <div className="border-b border-green-400/30 bg-green-400/10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+            <div className="min-w-0">
+              <p className="font-display text-base text-gold-100">{t.phoneBanner.heading}</p>
+              <p className="font-sans text-xs text-white/70">{t.phoneBanner.body}</p>
+            </div>
+            <Link
+              href="/dashboard/profile"
+              className="shrink-0 inline-flex items-center px-4 py-2 text-[10px] tracking-[0.25em] font-semibold bg-gradient-to-b from-gold-100 to-gold-600 text-black rounded-sm hover:brightness-110 transition"
+            >
+              {t.phoneBanner.cta}
+            </Link>
+          </div>
+        </div>
+      )}
 
       {children}
 
