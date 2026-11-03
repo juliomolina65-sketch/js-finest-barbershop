@@ -308,6 +308,8 @@ export const messages = {
         password: "Password",
         confirmPassword: "Confirm Password",
         passwordHint: "At least 8 characters",
+        phoneConsent:
+          "By entering your phone number you agree to receive text alerts from J's Finest Barbershop about appointments booked with you. Message frequency varies. Msg & data rates may apply. Reply STOP to opt out, HELP for help. Details: js-finestbarbershop.com/sms-terms",
       },
       buttons: {
         signIn: "SIGN IN",
@@ -635,6 +637,8 @@ export const messages = {
         password: "Contraseña",
         confirmPassword: "Confirmar Contraseña",
         passwordHint: "Al menos 8 caracteres",
+        phoneConsent:
+          "Al ingresar tu teléfono aceptas recibir alertas por texto de J's Finest Barbershop sobre citas reservadas contigo. La frecuencia varía. Pueden aplicar cargos de mensajes y datos. Responde STOP para cancelar, HELP para ayuda. Detalles: js-finestbarbershop.com/sms-terms",
       },
       buttons: {
         signIn: "INICIAR SESIÓN",

@@ -370,6 +370,7 @@ function ProfileSection({ initial }: { initial: Props["initial"] }) {
           label="Phone (for SMS notifications)"
           defaultValue={initial.phone}
           type="tel"
+          hint="By entering your phone number you agree to receive text alerts from J's Finest Barbershop about appointments booked with you. Message frequency varies. Msg & data rates may apply. Reply STOP to opt out, HELP for help. Details: js-finestbarbershop.com/sms-terms"
         />
         <Field
           name="yearsExperience"

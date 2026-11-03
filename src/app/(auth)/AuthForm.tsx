@@ -39,6 +39,7 @@ export default function AuthForm({ mode, action, t }: Props) {
             label={t.labels.phone}
             type="tel"
             autoComplete="tel"
+            hint={t.labels.phoneConsent}
           />
         </>
       )}

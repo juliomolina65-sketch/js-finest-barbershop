@@ -491,8 +491,8 @@ async function notifyBarbersOfBooking(b: {
     minute: "2-digit",
   });
   const body = b.isDirectBooking
-    ? `J's Finest: New booking for you! ${b.customerName}, ${b.serviceName}, ${when}. Customer phone: ${b.customerPhone}. ${SITE_URL}/dashboard`
-    : `J's Finest: New open appointment, ${b.serviceName}, ${when} (${b.customerName}). First barber to claim it gets it: ${SITE_URL}/dashboard`;
+    ? `J's Finest: New booking for you! ${b.customerName}, ${b.serviceName}, ${when}. Customer phone: ${b.customerPhone}. ${SITE_URL}/dashboard Reply STOP to opt out.`
+    : `J's Finest: New open appointment, ${b.serviceName}, ${when} (${b.customerName}). First barber to claim it gets it: ${SITE_URL}/dashboard Reply STOP to opt out.`;
   const numbers = [...new Set(barbers.map((x) => toE164(x.phone)).filter((n): n is string => Boolean(n)))];
   await Promise.all(numbers.map((to) => sendSms(to, body)));
 }
