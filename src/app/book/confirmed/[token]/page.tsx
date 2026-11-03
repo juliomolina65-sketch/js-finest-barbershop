@@ -98,7 +98,11 @@ export default async function ConfirmedPage({
             <Row label={t.service} value={appt.service.name} />
             <Row
               label={t.price}
-              value={`$${(appt.service.priceCents / 100).toFixed(0)} — ${t.payAtChair}`}
+              value={`$${(appt.service.priceCents / 100).toFixed(0)}${
+                appt.service.maxPriceCents && appt.service.maxPriceCents > appt.service.priceCents
+                  ? `–$${(appt.service.maxPriceCents / 100).toFixed(0)}`
+                  : ""
+              } — ${t.payAtChair}`}
             />
             <Row label={t.barberLabel} value={barberLine} />
             <Row label={t.nameLabel} value={appt.customer.name} />

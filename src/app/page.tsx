@@ -16,12 +16,11 @@ export const dynamic = "force-dynamic";
  * uses), so the menu renders in the reader's language.
  */
 const SERVICE_MENU: { slug: keyof Dict["landing"]["serviceCatalog"]; price: string }[] = [
-  { slug: "classic-cut", price: "$30" },
-  { slug: "skin-fade", price: "$35" },
+  { slug: "classic-cut", price: "$35–$45" },
+  { slug: "skin-fade", price: "$35–$45" },
   { slug: "beard-trim", price: "$20" },
   { slug: "hot-towel-shave", price: "$35" },
-  { slug: "kids-cut", price: "$22" },
-  { slug: "finest-package", price: "$60" },
+  { slug: "kids-cut", price: "$35–$45" },
 ];
 
 export default async function Home() {

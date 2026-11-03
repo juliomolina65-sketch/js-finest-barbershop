@@ -214,6 +214,9 @@ export const messages = {
       yourInfo: "Your info",
       anyoneAvailable: "Anyone Available",
       fastestOption: "FASTEST OPTION",
+      bookWith: "BOOK WITH",
+      seePortfolio: "SEE ALL THEIR WORK",
+      noWorkYet: "Photos of their cuts coming soon",
       anyoneDesc:
         "We'll send your request to all barbers available at this time — first to take it gets your chair.",
       preferredUnavailableA: "isn't available at",
@@ -538,6 +541,9 @@ export const messages = {
       yourInfo: "Tus datos",
       anyoneAvailable: "Cualquiera Disponible",
       fastestOption: "OPCIÓN MÁS RÁPIDA",
+      bookWith: "RESERVAR CON",
+      seePortfolio: "VER TODO SU TRABAJO",
+      noWorkYet: "Fotos de sus cortes próximamente",
       anyoneDesc:
         "Enviaremos tu solicitud a todos los barberos disponibles a esta hora — el primero en aceptarla se queda con tu silla.",
       preferredUnavailableA: "no está disponible a las",

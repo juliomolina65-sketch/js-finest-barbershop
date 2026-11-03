@@ -18,18 +18,16 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const SERVICES = [
-  { slug: "classic-cut", name: "Classic Cut", priceCents: 3000, durationMin: 30, sortOrder: 1,
+  { slug: "classic-cut", name: "Classic Cut", priceCents: 3500, maxPriceCents: 4500, durationMin: 30, sortOrder: 1,
     description: "Precision haircut tailored to your style. Hot towel finish included." },
-  { slug: "skin-fade", name: "Skin Fade", priceCents: 3500, durationMin: 45, sortOrder: 2,
+  { slug: "skin-fade", name: "Skin Fade", priceCents: 3500, maxPriceCents: 4500, durationMin: 45, sortOrder: 2,
     description: "Razor-sharp fade — from skin to a clean blend, finished to perfection." },
   { slug: "beard-trim", name: "Beard Trim & Lineup", priceCents: 2000, durationMin: 20, sortOrder: 3,
     description: "Detailed beard sculpting with crisp lines, hot towel, and beard oil." },
   { slug: "hot-towel-shave", name: "Hot Towel Shave", priceCents: 3500, durationMin: 45, sortOrder: 4,
     description: "The classic straight-razor experience — hot towels, oil, and a smooth finish." },
-  { slug: "kids-cut", name: "Kid's Cut (12 & under)", priceCents: 2200, durationMin: 30, sortOrder: 5,
+  { slug: "kids-cut", name: "Kid's Cut (12 & under)", priceCents: 3500, maxPriceCents: 4500, durationMin: 30, sortOrder: 5,
     description: "Patient, careful cuts for the next generation. Lollipop included." },
-  { slug: "finest-package", name: "The Finest Package", priceCents: 6000, durationMin: 75, sortOrder: 6,
-    description: "Cut + beard + hot towel shave. The full experience — head to chin." },
 ];
 
 const OPEN_9_TO_9 = JSON.stringify(

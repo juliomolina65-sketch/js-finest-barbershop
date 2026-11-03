@@ -4,6 +4,7 @@ import BookingFlow from "./BookingFlow";
 import SiteHeader from "@/components/SiteHeader";
 import SocialLinks from "@/components/SocialLinks";
 import { getDict } from "@/lib/i18n";
+import { getBarberPhoto, getBarberPortfolio } from "@/lib/barber-assets";
 
 export const metadata = {
   title: "Book — J's Finest Barbershop",
@@ -71,10 +72,20 @@ export default async function BookPage({
           slug: s.slug,
           name: s.name,
           priceCents: s.priceCents,
+          maxPriceCents: s.maxPriceCents,
           durationMin: s.durationMin,
           description: s.description,
         }))}
-        barbers={barbers}
+        barbers={barbers.map((b) => {
+          const work = getBarberPortfolio(b.slug);
+          return {
+            ...b,
+            photo: getBarberPhoto(b.slug),
+            // Newest uploads first (filenames are timestamps, sorted oldest first).
+            work: work.slice(-4).reverse(),
+            workCount: work.length,
+          };
+        })}
         candidateDates={candidateDates}
         initialBarberSlug={initialBarberSlug}
         t={t}

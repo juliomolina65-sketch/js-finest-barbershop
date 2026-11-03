@@ -43,7 +43,8 @@ async function main() {
     {
       slug: "classic-cut",
       name: "Classic Cut",
-      priceCents: 3000,
+      priceCents: 3500,
+      maxPriceCents: 4500,
       durationMin: 30,
       description:
         "Precision haircut tailored to your style. Hot towel finish included.",
@@ -53,6 +54,7 @@ async function main() {
       slug: "skin-fade",
       name: "Skin Fade",
       priceCents: 3500,
+      maxPriceCents: 4500,
       durationMin: 45,
       description:
         "Razor-sharp fade — from skin to a clean blend, finished to perfection.",
@@ -79,20 +81,12 @@ async function main() {
     {
       slug: "kids-cut",
       name: "Kid's Cut (12 & under)",
-      priceCents: 2200,
+      priceCents: 3500,
+      maxPriceCents: 4500,
       durationMin: 30,
       description:
         "Patient, careful cuts for the next generation. Lollipop included.",
       sortOrder: 5,
-    },
-    {
-      slug: "finest-package",
-      name: "The Finest Package",
-      priceCents: 6000,
-      durationMin: 75,
-      description:
-        "Cut + beard + hot towel shave. The full experience — head to chin.",
-      sortOrder: 6,
     },
   ];
 

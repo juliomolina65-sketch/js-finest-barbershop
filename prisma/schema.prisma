@@ -14,8 +14,10 @@ model Service {
   id           String   @id @default(cuid())
   slug         String   @unique
   name         String
-  /// price in cents (e.g. 3000 = $30.00)
+  /// price in cents (e.g. 3000 = $30.00). The low end when the price is a range.
   priceCents   Int
+  /// High end of the price when it depends on the barber (e.g. $35-$45); null = fixed price
+  maxPriceCents Int?
   /// service duration in minutes (drives time-slot length)
   durationMin  Int
   description  String

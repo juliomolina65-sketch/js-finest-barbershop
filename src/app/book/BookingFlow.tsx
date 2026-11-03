@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { fetchSlots, reserveAppointment } from "./actions";
@@ -11,6 +12,8 @@ type ServiceLite = {
   slug: string;
   name: string;
   priceCents: number;
+  /** High end when the price depends on the barber; null = fixed price. */
+  maxPriceCents: number | null;
   durationMin: number;
   description: string;
 };
@@ -20,6 +23,10 @@ type BarberLite = {
   slug: string;
   name: string;
   role: string;
+  photo: string | null;
+  /** Up to 4 recent portfolio photos, newest first. */
+  work: string[];
+  workCount: number;
 };
 
 type Step = "service" | "date" | "time" | "barber" | "info";
@@ -51,8 +58,9 @@ function serviceDesc(s: ServiceLite, catalog: ServiceCatalog): string {
   return catalog[s.slug as keyof ServiceCatalog]?.desc ?? s.description;
 }
 
-function money(cents: number) {
-  return `$${(cents / 100).toFixed(0)}`;
+function money(cents: number, maxCents?: number | null) {
+  const low = `$${(cents / 100).toFixed(0)}`;
+  return maxCents && maxCents > cents ? `${low}–$${(maxCents / 100).toFixed(0)}` : low;
 }
 function makeDur(minLabel: string, hourLabel: string) {
   return (min: number) => {
@@ -304,7 +312,7 @@ export default function BookingFlow({
                       {serviceName(s, serviceCatalog)}
                     </h3>
                     <span className="font-display text-xl text-gold-gradient shrink-0">
-                      {money(s.priceCents)}
+                      {money(s.priceCents, s.maxPriceCents)}
                     </span>
                   </div>
                   <p className="font-sans text-sm text-white/70 mb-3 leading-relaxed">
@@ -459,7 +467,7 @@ export default function BookingFlow({
               <button
                 type="button"
                 onClick={() => pickBarber(ANY_BARBER)}
-                className="bg-bg-card border border-gold-700/30 rounded-sm p-6 text-center hover:border-gold-400/60 transition"
+                className="bg-bg-card border border-gold-700/30 rounded-sm p-6 text-center hover:border-gold-400/60 transition flex flex-col items-center justify-center min-h-[180px]"
               >
                 <p className="font-display text-2xl text-gold-gradient mb-1">
                   {t.anyoneAvailable}
@@ -474,19 +482,16 @@ export default function BookingFlow({
               {barbers
                 .filter((b) => slot.availableBarberIds.includes(b.id))
                 .map((b) => (
-                  <button
+                  <BarberCard
                     key={b.id}
-                    type="button"
-                    onClick={() => pickBarber(b.id)}
-                    className="bg-bg-card border border-gold-700/30 rounded-sm p-6 text-center hover:border-gold-400/60 transition"
-                  >
-                    <p className="font-display text-2xl text-gold-gradient mb-1">
-                      {b.name}
-                    </p>
-                    <p className="font-sans text-xs tracking-[0.25em] text-green-300">
-                      {b.role.toUpperCase()}
-                    </p>
-                  </button>
+                    barber={b}
+                    onPick={() => pickBarber(b.id)}
+                    t={{
+                      bookWith: t.bookWith,
+                      seePortfolio: t.seePortfolio,
+                      noWorkYet: t.noWorkYet,
+                    }}
+                  />
                 ))}
             </div>
             {slot.availableBarberIds.length === 0 && (
@@ -607,5 +612,90 @@ function Field({
         />
       )}
     </label>
+  );
+}
+
+/**
+ * A barber choice on the booking flow: photo, name and their latest cuts, so
+ * customers can pick by the work they like. The whole top area selects the
+ * barber; the portfolio link opens their full profile in a new tab so the
+ * booking in progress isn't lost.
+ */
+function BarberCard({
+  barber: b,
+  onPick,
+  t,
+}: {
+  barber: BarberLite;
+  onPick: () => void;
+  t: { bookWith: string; seePortfolio: string; noWorkYet: string };
+}) {
+  const extra = b.workCount - b.work.length;
+  return (
+    <div className="group bg-bg-card border border-gold-700/30 rounded-sm overflow-hidden hover:border-gold-400/60 transition flex flex-col">
+      <button type="button" onClick={onPick} className="text-left p-4 sm:p-5 flex-1">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="relative w-12 h-12 shrink-0 rounded-full overflow-hidden border border-gold-500/50 bg-black flex items-center justify-center">
+            {b.photo ? (
+              <Image src={b.photo} alt="" fill sizes="48px" className="object-cover" />
+            ) : (
+              <span className="font-display text-xl text-gold-200">
+                {b.name.charAt(0).toUpperCase()}
+              </span>
+            )}
+          </div>
+          <div className="min-w-0">
+            <p className="font-display text-2xl text-gold-gradient leading-tight truncate">
+              {b.name}
+            </p>
+            <p className="font-sans text-[10px] tracking-[0.25em] text-green-300 truncate">
+              {b.role.toUpperCase()}
+            </p>
+          </div>
+        </div>
+
+        {b.work.length > 0 ? (
+          <div className="grid grid-cols-4 gap-1.5">
+            {b.work.map((src, i) => (
+              <div
+                key={src}
+                className="relative aspect-square overflow-hidden rounded-sm bg-black border border-gold-700/20"
+              >
+                <Image
+                  src={src}
+                  alt={`Cut by ${b.name}`}
+                  fill
+                  sizes="(max-width: 640px) 22vw, 120px"
+                  className="object-cover transition duration-300 group-hover:scale-105"
+                />
+                {i === b.work.length - 1 && extra > 0 && (
+                  <span className="absolute inset-0 bg-black/60 flex items-center justify-center font-display text-lg text-gold-100">
+                    +{extra}
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="font-sans text-xs text-white/40 border border-dashed border-gold-700/30 rounded-sm py-6 text-center">
+            {t.noWorkYet}
+          </p>
+        )}
+
+        <p className="mt-4 font-sans text-[11px] tracking-[0.25em] font-semibold text-gold-200 group-hover:text-gold-100">
+          {t.bookWith} {b.name.toUpperCase()} →
+        </p>
+      </button>
+      {b.workCount > 0 && (
+        <a
+          href={`/barbers/${b.slug}`}
+          target="_blank"
+          rel="noopener"
+          className="block border-t border-gold-700/20 px-4 sm:px-5 py-2.5 font-sans text-[10px] tracking-[0.25em] text-green-300 hover:text-green-100 hover:bg-green-400/5 transition"
+        >
+          {t.seePortfolio} ↗
+        </a>
+      )}
+    </div>
   );
 }
